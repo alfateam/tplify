@@ -1,0 +1,22 @@
+{
+    "env": {
+        "node": 1,
+        "browser": 1,
+        "es6": 1
+    },
+    "ecmaFeatures": {
+        "blockBindings": 1,
+        "forOf": 1,
+        "modules": 1
+    },
+    "rules": {
+        "strict": 0,
+        "quotes": [1, 'single'],
+        "no-unused-vars": 0,
+        "no-underscore-dangle": 0,
+        "curly": 0,
+        "mocha/no-exclusive-tests": 2
+
+    },
+    "plugins": ['mocha']
+}
