@@ -52,7 +52,9 @@ export default class ViewFixtures {
         <div></div>
         `;
 
-        this.template = new Template(this.rawTemplate);
+        this.dom = document.createElement('div');
+        this.dom.innerHTML = this.rawTemplate;
+        this.template = new Template(this.dom);
     }
 
     _initView() {

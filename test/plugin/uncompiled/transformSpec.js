@@ -9,5 +9,5 @@ describe('Plugin', () => {
     it('should return new instance on each require()', () => {
         var secondInstance = require('./test.tpl.html');
         expect(view).not.to.equal(secondInstance);
-    })
+    });
 });

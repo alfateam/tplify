@@ -8,11 +8,8 @@ function isTemplateFile(filename) {
 }
 
 export default function(b, opts) {
-    b.require(path.join(__dirname, 'view'), {
-        expose: 'tplify__view'
-    });
-    b.require(path.join(__dirname, 'template'), {
-        expose: 'tplify__template'
+    b.require(path.join(__dirname, 'viewFactory'), {
+        expose: 'tplify__viewFactory'
     });
     b.transform(function(filename) {
         if (!isTemplateFile(filename)) {
@@ -25,15 +22,15 @@ export default function(b, opts) {
             try {
                 let rawTemplate = jsesc(inputString);
                 moduleBody = `
-var View = require('tplify__view');
-var Template = require('tplify__template');
+var ViewFactory = require('tplify__viewFactory');
 
 delete module.exports;
 
+var viewFactory = new ViewFactory('${rawTemplate}');
+
 Object.defineProperty(module, 'exports', {
     get: function() {
-        var template = new Template('${rawTemplate}');
-        return new View(template);
+        return viewFactory.create();
     }
 });
 `;

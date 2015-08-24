@@ -1,28 +1,16 @@
 import Template from '../../../src/template.js';
 
 describe('Template', () => {
+    describe('create', () => {
+        let dom = document.createElement('div');
+        let sut = new Template(dom);
 
-    describe('create given a non <div> as the first element', () => {
-
-        it('accepts <td>', () => {
-            let sut = new Template('  \n\r <td></td>');
-            expect(sut.childNodes.length).to.equal(1);
+        it('should expose the dom', () => {
+            expect(sut.dom).to.equal(dom);
         });
-
-        it('accepts <th>', () => {
-            let sut = new Template('  \n\r <th></th>');
-            expect(sut.childNodes.length).to.equal(1);
-        });
-
-        it('accepts <tr>', () => {
-            let sut = new Template('  \n\r <tr></tr>');
-            expect(sut.childNodes.length).to.equal(1);
-        });
-
     });
-
+    
     describe('create given named container and 2 named children ', () => {
-
         let containerElementName = 'container',
             firstElementName = 'first',
             secondElementName = 'second',
@@ -32,7 +20,9 @@ describe('Template', () => {
                     <div data-name="${secondElementName}"></div>
                 </div>`;
 
-        let sut = new Template(rawTemplate);
+        let dom = document.createElement('div');
+        dom.innerHTML = rawTemplate;
+        let sut = new Template(dom);
 
 
         it('exposes named container', () => {
@@ -67,7 +57,9 @@ describe('Template', () => {
                     </div>
                 </div>`;
 
-        let sut = new Template(rawTemplate);
+        let dom = document.createElement('div');
+        dom.innerHTML = rawTemplate;
+        let sut = new Template(dom);
 
         it('exposes first propertyElement', () => {
             let actual = getByName(sut.propertyElements, firstPropertyName);
@@ -86,33 +78,41 @@ describe('Template', () => {
 
     });
 
-    describe('create given several elements on the same level', () => {
+    describe('create given several elements on the root level', () => {
         let rawTemplate = `<div></div><p></p>`;
-        let sut = new Template(rawTemplate);
+        let dom = document.createElement('div');
+        dom.innerHTML = rawTemplate;
+        let sut = new Template(dom);
 
         it('exposes all of them', () => {
             expect(sut.childNodes.length).to.equal(2);
         });
     });
 
+
+
+    describe('reclaimChildren attached to an external node ', () => {
+        let dom = document.createElement('div');
+        let rawTemplate = '<div></div>';
+        dom.innerHTML = rawTemplate;
+
+        let sut = new Template(dom);
+        let testElement = sut.childNodes[0];
+
+        let region = document.createElement('div');
+        region.appendChild(testElement);
+
+        sut.reclaimChildren();
+
+        it('removes the element from the original parent', () => {
+            expect(region.children.length).to.equal(0);
+        });
+    });
+
+
     function getByName(collection, name) {
         return collection.filter(i => {
             return i.name === name;
         })[0];
     }
-
-    describe('reclaimChildren attached to an external node ', () => {
-
-        let externalNode = document.createElement('div');
-        let sut = new Template('<div></div>');
-        let testElement = sut.childNodes[0];
-        externalNode.appendChild(testElement);
-
-        sut.reclaimChildren();
-
-        it('removes the element from the original parent', () => {
-            expect(externalNode.children.length).to.equal(0);
-        });
-    })
-
 });

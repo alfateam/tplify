@@ -1,10 +1,13 @@
 export default class Template {
 
-    constructor(rawTemplate) {
-        this._rawTemplate = rawTemplate || '';
+    constructor(dom) {
+        this._dom = dom;
         this._init();
-        this._loadDom();
         this._compile();
+    }
+
+    get dom() {
+        return this._dom;
     }
 
     _init() {
@@ -13,30 +16,15 @@ export default class Template {
         this._propertyElements = [];
     }
 
-    get rawTemplate() {
-        return this._rawTemplate;
-    }
-
-    _loadDom() {
-        if (this._rawTemplate.match(/^<(td|th)/i)) {
-            this._templateDom = document.createElement('tr');
-        } else if (this._rawTemplate.match(/^<(tr)/i)) {
-            this._templateDom = document.createElement('tbody');
-        } else {
-            this._templateDom = document.createElement('div');
-        }
-        this._templateDom.innerHTML = this._rawTemplate;
-    }
-
     _compile() {
         this._namedElements = this._processAttributes('data-name');
         this._propertyElements = this._processAttributes('data-property');
-        this._childNodes = [].slice.call(this._templateDom.childNodes, 0);
+        this._childNodes = [].slice.call(this._dom.childNodes, 0);
     }
 
     _processAttributes(attrib) {
         let result = [];
-        let elements = this._templateDom.querySelectorAll('[' + attrib + ']');
+        let elements = this._dom.querySelectorAll('[' + attrib + ']');
         for (let i = 0; i < elements.length; i++) {
             let element = elements[i];
             let name = element.getAttribute(attrib);
@@ -44,7 +32,6 @@ export default class Template {
                 name: name,
                 value: element
             });
-            element.removeAttribute(attrib);
         }
         return result;
     }
@@ -63,7 +50,7 @@ export default class Template {
 
     reclaimChildren() {
         this._childNodes.forEach((element) => {
-            this._templateDom.appendChild(element)
+            this._dom.appendChild(element)
         });
     }
 }

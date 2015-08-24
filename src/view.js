@@ -5,6 +5,10 @@ export default class View {
         this._template = template;
     }
 
+    get template() {
+        return this._template;
+    }
+
     activate(region) {
         this._region = region;
         this._attachTemplate();
