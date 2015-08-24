@@ -3,17 +3,11 @@ export default class View {
         this._properties = [];
         this._activeChildElements = [];
         this._template = template;
+        this._attachTemplate();
     }
 
     get template() {
         return this._template;
-    }
-
-    activate(region) {
-        this._region = region;
-        this._attachTemplate();
-        this._moveDomChildrenToRegion();
-        this._tryUpdatePropertiesData();
     }
 
     _attachTemplate() {
@@ -31,6 +25,12 @@ export default class View {
         this._template.propertyElements.forEach(val => {
             this._properties[val.name] = val.value;
         });
+    }
+
+    activate(region) {
+        this._region = region;
+        this._moveDomChildrenToRegion();
+        this._tryUpdatePropertiesData();
     }
 
     _moveDomChildrenToRegion() {
