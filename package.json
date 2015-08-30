@@ -1,7 +1,7 @@
 {
   "version": "0.0.2",
   "name": "tplify",
-  "description": "A simple html template compiler transform",
+  "description": "A simple html template compiler plugin for Browserify",
   "main": "index.js",
   "scripts": {
     "build": "./node_modules/.bin/babel ./src --out-dir ./dist",
