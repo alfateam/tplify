@@ -56,8 +56,11 @@ export default class View {
     }
 
     _getElementValue(element) {
-        if (element.nodeName === 'INPUT')
+        if (element.nodeName === 'INPUT') {
+            if (element.type === 'checkbox' || element.type === 'radio')
+                return element.checked;
             return element.value;
+        }
         return element.innerHTML;
     }
 
@@ -100,8 +103,11 @@ export default class View {
 
     _setElementValue(element, value) {
         if (!element) return;
-        if (element.nodeName === 'INPUT')
+        if (element.nodeName === 'INPUT') {
+            if (element.type === 'checkbox' || element.type === 'radio')
+                element.checked = value;
             element.value = value;
+        }
         else
             element.innerHTML = value;
     }
