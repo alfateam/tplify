@@ -3,7 +3,6 @@ export default class View {
         this._properties = [];
         this._activeChildElements = [];
         this._template = template;
-        this._attachTemplate();
     }
 
     get template() {
@@ -29,6 +28,7 @@ export default class View {
 
     activate(region) {
         this._region = region;
+        this._attachTemplate();
         this._moveDomChildrenToRegion();
         this._tryUpdatePropertiesData();
     }

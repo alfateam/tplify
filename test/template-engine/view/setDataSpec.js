@@ -42,6 +42,22 @@ describe('View', () => {
             })
         });
 
+        describe('set property when view has been deactivated and activated agaein', () => {
+          let builder = new ViewTestBuilder();
+          let sut = builder.activate().build();
+          let data = {};
+          data[builder.propertyElement1] = 'foo';
+          sut.setData(data);
+          builder.deactivate();
+          builder.activate();
+          data[builder.propertyElement1] = 'bar';
+          sut.setData(data);
+
+          let actual = sut.getData();
+          expect(actual[builder.propertyElement1]).to.eql(data[builder.propertyElement1]);
+
+        });
+
     });
 
 });

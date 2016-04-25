@@ -20,6 +20,11 @@ describe('View', () => {
             expect(builder.region.children[2].id).to.equal(builder.namedElementId2);
         });
 
-        
+        it('exposes all the named elements', () => {
+            expect(sut[builder.namedElement0].id).to.equal(builder.namedElementId0);
+            expect(sut[builder.namedElement1].id).to.equal(builder.namedElementId1);
+            expect(sut[builder.namedElement2].id).to.equal(builder.namedElementId2);
+        });
+
     });
 });
