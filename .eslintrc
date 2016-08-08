@@ -18,5 +18,12 @@
         "mocha/no-exclusive-tests": 2
 
     },
-    "plugins": ['mocha']
+    "parserOptions": {
+        "ecmaVersion": 7,
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "impliedStrict" : true
+        }
+    },
+    "plugins": ['mocha', 'babel']
 }
