@@ -12,13 +12,17 @@ export default class Template {
 
     _init() {
         this._childNodes = [];
-        this._namedElements = [];
-        this._propertyElements = [];
+        this.namedElements = {};
+        this.propertyElements = {};
     }
 
     _compile() {
-        this._namedElements = this._processAttributes('data-name');
-        this._propertyElements = this._processAttributes('data-property');
+        this._processAttributes('data-name').forEach(item => {
+           this.namedElements[item.name] = item.value;
+        });
+        this._processAttributes('data-property').forEach(item => {
+            this.propertyElements[item.name] = item.value;
+        });
         this._childNodes = [].slice.call(this._dom.childNodes, 0);
     }
 
@@ -40,17 +44,7 @@ export default class Template {
         return this._childNodes;
     }
 
-    get namedElements() {
-        return this._namedElements;
-    }
-
-    get propertyElements() {
-        return this._propertyElements;
-    }
-
     reclaimChildren() {
-        this._childNodes.forEach((element) => {
-            this._dom.appendChild(element)
-        });
+        this._childNodes.forEach(element => this._dom.appendChild(element));
     }
 }

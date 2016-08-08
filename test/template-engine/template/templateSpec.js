@@ -9,7 +9,7 @@ describe('Template', () => {
             expect(sut.dom).to.equal(dom);
         });
     });
-    
+
     describe('create given named container and 2 named children ', () => {
         let containerElementName = 'container',
             firstElementName = 'first',
@@ -26,18 +26,18 @@ describe('Template', () => {
 
 
         it('exposes named container', () => {
-            let actual = getByName(sut.namedElements, containerElementName);
+            let actual = sut.namedElements[containerElementName];
             expect(actual).is.not.undefined;
 
         });
 
         it('exposes first named child', () => {
-            let actual = getByName(sut.namedElements, firstElementName);
+            let actual = sut.namedElements[firstElementName];
             expect(actual).is.not.undefined;
         });
 
         it('exposes second named child', () => {
-            let actual = getByName(sut.namedElements, secondElementName);
+            let actual = sut.namedElements[secondElementName];
             expect(actual).is.not.undefined;
         });
 
@@ -62,24 +62,24 @@ describe('Template', () => {
         let sut = new Template(dom);
 
         it('exposes first propertyElement', () => {
-            let actual = getByName(sut.propertyElements, firstPropertyName);
+            let actual = sut.propertyElements[firstPropertyName];
             expect(actual).is.not.undefined;
         });
 
         it('exposes second propertyElement', () => {
-            let actual = getByName(sut.propertyElements, secondPropertyName);
+            let actual = sut.propertyElements[secondPropertyName];
             expect(actual).is.not.undefined;
         });
 
         it('exposes third property element', () => {
-            let actual = getByName(sut.propertyElements, thirdPropertyName);
+            let actual = sut.propertyElements[thirdPropertyName];
             expect(actual).is.not.undefined;
         });
 
     });
 
     describe('create given several elements on the root level', () => {
-        let rawTemplate = `<div></div><p></p>`;
+        let rawTemplate = '<div></div><p></p>';
         let dom = document.createElement('div');
         dom.innerHTML = rawTemplate;
         let sut = new Template(dom);

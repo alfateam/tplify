@@ -1,36 +1,23 @@
 export default class View {
     constructor(template) {
-        this._properties = [];
         this._activeChildElements = [];
         this._template = template;
+        this._exposeNamedElements();
     }
 
     get template() {
         return this._template;
     }
 
-    _attachTemplate() {
-        this._exposeNamedElements();
-        this._collectPropertyElements();
-    }
-
     _exposeNamedElements() {
-        this._template.namedElements.forEach(val => {
-            this[val.name] = val.value;
-        });
-    }
-
-    _collectPropertyElements() {
-        this._template.propertyElements.forEach(val => {
-            this._properties[val.name] = val.value;
+        Object.keys(this._template.namedElements).forEach(elementName => {
+            this[elementName] = this._template.namedElements[elementName];
         });
     }
 
     activate(region) {
         this._region = region;
-        this._attachTemplate();
         this._moveDomChildrenToRegion();
-        this._tryUpdatePropertiesData();
     }
 
     _moveDomChildrenToRegion() {
@@ -41,16 +28,15 @@ export default class View {
     }
 
     deactivate() {
-        this._properties = [];
         this._template.reclaimChildren();
         this._activeChildElements = [];
     }
 
     getData() {
         let result = {};
-        this._template.propertyElements.forEach(propertyElement => {
-            let element = propertyElement.value;
-            result[propertyElement.name] = this._getElementValue(element);
+        Object.keys(this._template.propertyElements).forEach(propertyName => {
+            let element = this._template.propertyElements[propertyName];
+            result[propertyName] = this._getElementValue(element);
         });
         return result;
     }
@@ -65,41 +51,19 @@ export default class View {
     }
 
     setData(data) {
-        this._data = data;
-        this._tryUpdatePropertiesData();
+        Object.keys(data).forEach(name => {
+            let element = this._template.propertyElements[name];
+            this._setElementValue(element, data[name]);
+        });
     }
 
     clearData() {
-        this._tryClearPropertiesData();
-    }
-
-
-    _tryUpdatePropertiesData() {
-        if (this._region !== undefined && this._data !== undefined) {
-            this._updateProperties();
-        }
-    }
-
-    _updateProperties() {
-        for (let name in this._data) {
-            let element = this._properties[name];
-            let data = this._data[name];
-            this._setElementValue(element, data);
-        }
-    }
-
-    _tryClearPropertiesData() {
-        if (this._region !== undefined && this._properties !== undefined) {
-            this._clearProperties();
-        }
-    }
-
-    _clearProperties() {
-        for (let i in this._properties) {
-            let element = this._properties[i];
+        Object.keys(this._template.propertyElements).forEach(name => {
+            let element = this._template.propertyElements[name];
             this._setElementValue(element, '');
-        }
+        });
     }
+
 
     _setElementValue(element, value) {
         if (!element) return;
@@ -107,8 +71,7 @@ export default class View {
             if (element.type === 'checkbox' || element.type === 'radio')
                 element.checked = value;
             element.value = value;
-        }
-        else
+        } else
             element.innerHTML = value;
     }
 

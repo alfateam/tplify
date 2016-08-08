@@ -2,3 +2,5 @@
 .eslintrc
 node_modules
 test
+src
+karma*
