@@ -40,7 +40,6 @@ describe('Template', () => {
             let actual = sut.namedElements[secondElementName];
             expect(actual).is.not.undefined;
         });
-
     });
 
     describe('create given 2 elements marked as property on different levels', () => {
@@ -89,7 +88,27 @@ describe('Template', () => {
         });
     });
 
+    describe('create given element with i18n', () => {
+        let translateId = 'hello';
+        let translatedContent = 'Hei';
+        let translationProvider = {
+            translate: function(id, element) {
+                if(id === translateId)
+                    return translatedContent;
+            }
+        };
 
+        let rawTemplate = `<div data-translate="${translateId}">Hello</div>`;
+
+        let dom = document.createElement('div');
+        dom.innerHTML = rawTemplate;
+        let sut = new Template(dom, translationProvider);
+
+        it('translates textContent of elements with data-translate', () => {
+            let actual = dom.children[0].textContent;
+            expect(actual).to.equal(translatedContent);
+        });
+    })
 
     describe('reclaimChildren attached to an external node ', () => {
         let dom = document.createElement('div');

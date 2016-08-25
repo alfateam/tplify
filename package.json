@@ -1,5 +1,5 @@
 {
-  "version": "0.0.6",
+  "version": "0.0.7",
   "name": "tplify",
   "description": "A simple html template compiler plugin for Browserify",
   "main": "index.js",
