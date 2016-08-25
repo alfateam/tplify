@@ -13,11 +13,10 @@ describe('Template', () => {
     describe('create given named container and 2 named children ', () => {
         let containerElementName = 'container',
             firstElementName = 'first',
-            firstElementTranslateId = 'hello',
             secondElementName = 'second',
             rawTemplate = `
                 <div data-name=${containerElementName}>
-                    <div data-name="${firstElementName}">Hello</div>
+                    <div data-name="${firstElementName}"></div>
                     <div data-name="${secondElementName}"></div>
                 </div>`;
 
