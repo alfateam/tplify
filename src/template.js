@@ -1,7 +1,9 @@
-export default class Template {
+import simpleTranslationProvider from './simpleTranslationProvider';
 
-    constructor(dom) {
+export default class Template {
+    constructor(dom, translationProvider = simpleTranslationProvider) {
         this._dom = dom;
+        this._translationProvider = translationProvider;
         this._init();
         this._compile();
     }
@@ -22,6 +24,9 @@ export default class Template {
         });
         this._processAttributes('data-property').forEach(item => {
             this.propertyElements[item.name] = item.value;
+        });
+        this._processAttributes('data-translate').forEach(item => {
+            item.value.textContent = this._translationProvider.translate(item.name, item.value);
         });
         this._childNodes = [].slice.call(this._dom.childNodes, 0);
     }
